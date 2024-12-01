@@ -41,19 +41,19 @@ pub fn read_file_part(folder: &str, day: Day, part: u8) -> String {
 /// The optional, second parameter (1 or 2) allows you to only run a single part of the solution.
 #[macro_export]
 macro_rules! solution {
-    ($day:expr) => {
-        $crate::solution!(@impl $day, [part_one, 1] [part_two, 2]);
+    ($year:literal, $day:literal) => {
+        $crate::solution!(@impl $year, $day, [part_one, 1] [part_two, 2]);
     };
-    ($day:expr, 1) => {
-        $crate::solution!(@impl $day, [part_one, 1]);
+    ($year:literal, $day:literal, 1) => {
+        $crate::solution!(@impl $year, $day, [part_one, 1]);
     };
-    ($day:expr, 2) => {
-        $crate::solution!(@impl $day, [part_two, 2]);
+    ($year:literal, $day:literal, 2) => {
+        $crate::solution!(@impl $year, $day, [part_two, 2]);
     };
 
-    (@impl $day:expr, $( [$func:expr, $part:expr] )*) => {
+    (@impl $year:literal, $day:literal, $( [$func:expr, $part:expr] )*) => {
         /// The current day.
-        const DAY: $crate::template::Day = $crate::day!($day);
+        const DAY: $crate::template::Day = $crate::day!($year, $day);
 
         #[cfg(feature = "dhat-heap")]
         #[global_allocator]

@@ -67,7 +67,7 @@ fn construct_table(prefix: &str, timings: Timings, total_millis: f64) -> String 
         let path = get_path_for_bin(timing.day);
         lines.push(format!(
             "| [Day {}]({}) | `{}` | `{}` |",
-            timing.day.into_inner(),
+            timing.day,
             path,
             timing.part_1.unwrap_or_else(|| "-".into()),
             timing.part_2.unwrap_or_else(|| "-".into())

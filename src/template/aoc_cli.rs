@@ -88,22 +88,16 @@ fn get_puzzle_path(day: Day) -> String {
     format!("data/puzzles/{day}.md")
 }
 
-fn get_year() -> Option<u16> {
-    match std::env::var("AOC_YEAR") {
-        Ok(x) => x.parse().ok().or(None),
-        Err(_) => None,
-    }
-}
-
 fn build_args(command: &str, args: &[String], day: Day) -> Vec<String> {
     let mut cmd_args = args.to_vec();
 
-    if let Some(year) = get_year() {
-        cmd_args.push("--year".into());
-        cmd_args.push(year.to_string());
-    }
-
-    cmd_args.append(&mut vec!["--day".into(), day.to_string(), command.into()]);
+    cmd_args.append(&mut vec![
+        "--year".into(),
+        day.into_inner().0.to_string(),
+        "--day".into(),
+        day.into_inner().1.to_string(),
+        command.into(),
+    ]);
 
     cmd_args
 }
