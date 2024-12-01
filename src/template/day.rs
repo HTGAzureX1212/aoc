@@ -53,7 +53,10 @@ impl Day {
         let offset = FixedOffset::east_opt(SERVER_UTC_OFFSET * 3600)?;
         let today = Utc::now().with_timezone(&offset);
         if today.month() == 12 && today.day() <= 25 {
-            Self::new(u8::try_from(today.day()).ok()?)
+            Self::new(
+                u16::try_from(today.year()).ok()?,
+                u8::try_from(today.day()).ok()?,
+            )
         } else {
             None
         }
