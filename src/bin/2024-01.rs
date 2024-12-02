@@ -3,11 +3,11 @@ advent_of_code::solution!(2024, 01);
 pub fn part_one(input: &str) -> Option<u32> {
     let (mut l, mut r): (Vec<u32>, Vec<u32>) = input
         .lines()
-        .map(|line| line.split("   ").collect::<Vec<_>>())
-        .map(|vec| {
+        .map(|line| line.split_once("   ").unwrap())
+        .map(|pair| {
             (
-                vec[0].parse::<u32>().unwrap(),
-                vec[1].parse::<u32>().unwrap(),
+                pair.0.parse::<u32>().unwrap(),
+                pair.1.parse::<u32>().unwrap(),
             )
         })
         .unzip();
@@ -15,30 +15,25 @@ pub fn part_one(input: &str) -> Option<u32> {
     l.sort_unstable();
     r.sort_unstable();
 
-    Some(
-        l.iter()
-            .zip(r.iter())
-            .map(|(li, ri)| li.abs_diff(*ri))
-            .sum::<u32>(),
-    )
+    Some(l.iter().zip(r).map(|(li, ri)| li.abs_diff(ri)).sum())
 }
 
-pub fn part_two(input: &str) -> Option<u64> {
+pub fn part_two(input: &str) -> Option<u32> {
     let (l, r): (Vec<u32>, Vec<u32>) = input
         .lines()
-        .map(|line| line.split("   ").collect::<Vec<_>>())
-        .map(|vec| {
+        .map(|line| line.split_once("   ").unwrap())
+        .map(|pair| {
             (
-                vec[0].parse::<u32>().unwrap(),
-                vec[1].parse::<u32>().unwrap(),
+                pair.0.parse::<u32>().unwrap(),
+                pair.1.parse::<u32>().unwrap(),
             )
         })
         .unzip();
 
     Some(
         l.iter()
-            .map(|i| r.iter().filter(|j| i == *j).count() as u64 * *i as u64)
-            .sum::<u64>(),
+            .map(|i| r.iter().filter(|j| i == *j).count() as u32 * *i)
+            .sum(),
     )
 }
 
