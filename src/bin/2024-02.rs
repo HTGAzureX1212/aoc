@@ -37,16 +37,9 @@ fn safe_predicate(iter: &(impl Iterator<Item = i8> + Clone)) -> bool {
 }
 
 fn damped_safe_predicate(iter: &(impl Iterator<Item = i8> + Clone)) -> bool {
-    let vec = iter.clone().collect::<Vec<_>>();
-    for i in 0..vec.len() {
-        let mut new = vec.clone();
-        new.remove(i);
-        if safe_predicate(&new.into_iter()) {
-            return true;
-        }
-    }
-
-    false
+    iter.clone()
+        .combinations(iter.clone().count() - 1)
+        .any(|vec| safe_predicate(&vec.into_iter()))
 }
 
 #[cfg(test)]
