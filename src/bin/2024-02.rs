@@ -8,7 +8,7 @@ pub fn part_one(input: &str) -> Option<usize> {
     Some(
         input
             .lines()
-            .map(|s| s.split_whitespace().map(|s| s.parse::<i8>().unwrap()))
+            .map(|s| s.split_whitespace().map(|s| s.parse::<u8>().unwrap()))
             .filter(safe_predicate)
             .count(),
     )
@@ -19,7 +19,7 @@ pub fn part_two(input: &str) -> Option<usize> {
 
     let damped = input
         .lines()
-        .map(|s| s.split_whitespace().map(|s| s.parse::<i8>().unwrap()))
+        .map(|s| s.split_whitespace().map(|s| s.parse::<u8>().unwrap()))
         .filter(|iter| !safe_predicate(iter))
         .filter(damped_safe_predicate)
         .count();
@@ -27,7 +27,7 @@ pub fn part_two(input: &str) -> Option<usize> {
     Some(already_safe + damped)
 }
 
-fn safe_predicate(iter: &(impl Iterator<Item = i8> + Clone)) -> bool {
+fn safe_predicate(iter: &(impl Iterator<Item = u8> + Clone)) -> bool {
     (iter.clone().is_sorted() || iter.clone().is_sorted_by_key(|a| Reverse(a)))
         && iter
             .clone()
@@ -36,7 +36,7 @@ fn safe_predicate(iter: &(impl Iterator<Item = i8> + Clone)) -> bool {
             .all(|d| (1..=3).contains(&d))
 }
 
-fn damped_safe_predicate(iter: &(impl Iterator<Item = i8> + Clone)) -> bool {
+fn damped_safe_predicate(iter: &(impl Iterator<Item = u8> + Clone)) -> bool {
     iter.clone()
         .combinations(iter.clone().count() - 1)
         .any(|vec| safe_predicate(&vec.into_iter()))
