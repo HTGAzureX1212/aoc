@@ -22,17 +22,17 @@ pub fn part_two(input: &str) -> Option<u64> {
     Some(
         regex
             .captures_iter(input)
-            .map(|capture| match &capture[0] {
-                "don't()" => {
-                    on = false;
-                    0
-                }
-                "do()" => {
-                    on = true;
-                    0
-                }
-                _ if on => capture[1].parse::<u64>().unwrap() * capture[2].parse::<u64>().unwrap(),
-                _ => 0,
+            .map(|capture| {
+                match &capture[0] {
+                    "don't()" => on = false,
+                    "do()" => on = true,
+                    _ if on => {
+                        return capture[1].parse::<u64>().unwrap()
+                            * capture[2].parse::<u64>().unwrap()
+                    }
+                    _ => (),
+                };
+                0
             })
             .sum(),
     )
