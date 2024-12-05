@@ -26,6 +26,7 @@ dependencies = [
  "itertools",
  "pico-args",
  "regex",
+ "serde_scan",
  "tinyjson",
 ]
 
@@ -410,6 +411,15 @@ checksum = "3d1c7e3eac408d115102c4c24ad393e0821bb3a5df4d506a80f85f7a742a526b"
 dependencies = [
  "itoa",
  "ryu",
+ "serde",
+]
+
+[[package]]
+name = "serde_scan"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c328aed355674cef5038b201b14b24eb877213462edb7ba28801c6bdd0ac5597"
+dependencies = [
  "serde",
 ]
 
