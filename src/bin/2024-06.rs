@@ -1,6 +1,6 @@
 #![feature(let_chains)]
 
-use std::{collections::HashSet, hash::Hash};
+use std::{collections::HashSet, f32::consts::PI, hash::Hash};
 
 use itertools::Itertools;
 
@@ -27,12 +27,12 @@ impl Hash for Direction {
 
 struct Cursor {
     dir: Direction,
-    x: usize,
-    y: usize,
+    x: isize,
+    y: isize,
 }
 
 impl Cursor {
-    pub fn new(x: usize, y: usize) -> Self {
+    pub fn new(x: isize, y: isize) -> Self {
         Self {
             dir: Direction::Up,
             x,
@@ -67,7 +67,7 @@ impl Cursor {
         };
     }
 
-    pub fn coordinates(&self) -> (usize, usize) {
+    pub fn coordinates(&self) -> (isize, isize) {
         (self.x, self.y)
     }
 
@@ -86,13 +86,13 @@ pub fn part_one(input: &str) -> Option<u64> {
         .find_position(|row| row.iter().find_position(|k| **k == '^').is_some())
         .unwrap();
     let (x, _) = vec.iter().find_position(|k| **k == '^').unwrap();
-    let mut cursor = Cursor::new(x, y);
+    let mut cursor = Cursor::new(x as isize, y as isize);
 
     let mut visited = HashSet::new();
 
     let mut count = 0;
-    while let Some(row) = matrix.get(cursor.coordinates().1)
-        && let Some(c) = row.get(cursor.coordinates().0)
+    while let Some(row) = matrix.get(cursor.coordinates().1 as usize)
+        && let Some(c) = row.get(cursor.coordinates().0 as usize)
     {
         if visited.insert((cursor.coordinates().0, cursor.coordinates().1)) && *c != '#' {
             count += 1;
@@ -110,7 +110,59 @@ pub fn part_one(input: &str) -> Option<u64> {
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
-    None
+    let matrix = input
+        .lines()
+        .map(|line| line.chars().collect::<Vec<_>>())
+        .collect::<Vec<_>>();
+
+    let mut count = 0;
+
+    for yy in 0usize..matrix.len() {
+        for xx in 0usize..matrix[0].len() {
+            if matrix[yy][xx] == '#' || matrix[yy][xx] == '^' {
+                continue;
+            }
+
+            let mut cloned = matrix.clone();
+            cloned[yy][xx] = '#';
+            if will_stuck(cloned) {
+                count += 1;
+            }
+        }
+    }
+
+    Some(count)
+}
+
+fn will_stuck(matrix: Vec<Vec<char>>) -> bool {
+    let (y, vec) = matrix
+        .iter()
+        .find_position(|row| row.iter().find_position(|k| **k == '^').is_some())
+        .unwrap();
+    let (x, _) = vec.iter().find_position(|k| **k == '^').unwrap();
+    let mut cursor = Cursor::new(x as isize, y as isize);
+
+    let mut visited = HashSet::new();
+
+    let mut count = 0;
+    while let Some(row) = matrix.get(cursor.coordinates().1 as usize)
+        && let Some(c) = row.get(cursor.coordinates().0 as usize)
+    {
+        if *c == '#' {
+            cursor.backward();
+            cursor.turn();
+            continue;
+        } else if !visited.insert((
+            cursor.coordinates().0,
+            cursor.coordinates().1,
+            cursor.headed(),
+        )) {
+            return true;
+        }
+        cursor.forward();
+    }
+
+    false
 }
 
 #[cfg(test)]
@@ -126,6 +178,6 @@ mod tests {
     #[test]
     fn test_part_two() {
         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-        assert_eq!(result, None);
+        assert_eq!(result, Some(6));
     }
 }
