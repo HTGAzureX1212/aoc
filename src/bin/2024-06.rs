@@ -144,7 +144,6 @@ fn will_stuck(matrix: Vec<Vec<char>>) -> bool {
 
     let mut visited = HashSet::new();
 
-    let mut count = 0;
     while let Some(row) = matrix.get(cursor.coordinates().1 as usize)
         && let Some(c) = row.get(cursor.coordinates().0 as usize)
     {
