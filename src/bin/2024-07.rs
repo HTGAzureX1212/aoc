@@ -15,7 +15,7 @@ pub fn part_one(input: &str) -> Option<i64> {
                 )
             })
             .filter(|(l, r)| valid((*l, r.clone())))
-            .map(|(left, right)| left)
+            .map(|(left, _)| left)
             .sum::<i64>(),
     )
 }
@@ -35,7 +35,7 @@ pub fn part_two(input: &str) -> Option<i64> {
                 )
             })
             .filter(|(l, r)| valid_p2((*l, r.clone())))
-            .map(|(left, right)| left)
+            .map(|(left, _)| left)
             .sum::<i64>(),
     )
 }
