@@ -29,5 +29,7 @@ tinyjson = "2.5.1"
 
 # Solution dependencies
 itertools = "0.13.0"
+memchr = "2.7.4"
+pathfinding = "4.11.0"
 regex = "1.11.1"
 serde_scan = "0.4.1"
