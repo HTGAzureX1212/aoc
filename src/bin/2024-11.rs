@@ -2,8 +2,6 @@
 
 use std::{collections::HashMap, sync::OnceLock};
 
-use itertools::Itertools;
-
 advent_of_code::solution!(2024, 11);
 
 static mut CACHE: OnceLock<HashMap<(String, u32), u64>> = OnceLock::new();
@@ -13,13 +11,14 @@ pub fn part_one(input: &str) -> Option<u64> {
         CACHE.get_or_init(HashMap::new);
     }
 
-    let stones = input
-        .trim()
-        .split(' ')
-        .map(|com| com.to_string())
-        .collect_vec();
-
-    Some(stones.iter().map(|num| process(num.clone(), 25)).sum())
+    Some(
+        input
+            .trim()
+            .split(' ')
+            .map(|com| com.to_string())
+            .map(|num| process(num.clone(), 25))
+            .sum(),
+    )
 }
 
 pub fn part_two(input: &str) -> Option<u64> {
@@ -27,13 +26,14 @@ pub fn part_two(input: &str) -> Option<u64> {
         CACHE.get_or_init(HashMap::new);
     }
 
-    let stones = input
-        .trim()
-        .split(' ')
-        .map(|com| com.to_string())
-        .collect_vec();
-
-    Some(stones.iter().map(|num| process(num.clone(), 75)).sum())
+    Some(
+        input
+            .trim()
+            .split(' ')
+            .map(|com| com.to_string())
+            .map(|num| process(num.clone(), 75))
+            .sum(),
+    )
 }
 
 fn process(num: String, iteration: u32) -> u64 {
